@@ -8,7 +8,7 @@ def index(request):
     # The context contains information such as the client's machine details, for example.
     context = RequestContext(request)
 
-    # Construct a dictionary to pass to the template engine as its contest.
+    # Construct a dictionary to pass to the template engine as its context.
     # Note the key boldmessage is the same as {{ boldmessage }} in the template!
     context_dict = {'boldmessage': "I am bold font from the context"}
 
@@ -19,4 +19,6 @@ def index(request):
 
 
 def about(request):
-    return HttpResponse("This is my About Rango page <a href='/rango/'>Index</a>")
+    context = RequestContext(request)
+    context_dict = {'boldmessage': "Welcome!"}
+    return render_to_response('rango/about.html', context_dict, context) 
