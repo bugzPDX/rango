@@ -58,6 +58,9 @@ def index(request):
     for category in category_list:
         category.url = category.name.replace(' ', '_')
 
+    page_list = Page.objects.order_by('-views')[:5]
+    context_dict['pages'] = page_list
+
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
