@@ -50,6 +50,19 @@
         <div class="span3">
             <div class="well sidebar-nav">
                 <!--- Empty for the timebeing -->
+                <ul class="nav nav-list">
+                    <li class="nav-header">Find a Category</li>
+                    <form>
+                    <label></label>
+                    <li><input  class="search-query span10" type="text"
+                        name="suggestion" value="" id="suggestion" /></li>
+                    </form>
+                </ul>
+{% if cat_list %}
+        <div id="cats">
+                {% include 'rango/category_list.html' with cat_list=cat_list %}
+        </div>
+{% endif %}
                 {% block sidebar %}
                 {% endblock %}
                 <div id="cats">
