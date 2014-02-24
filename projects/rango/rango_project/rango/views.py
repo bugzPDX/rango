@@ -57,7 +57,7 @@ def like_category(request):
         category = Category.objects.get(id=int(cat_id))
         if category:
             likes = category.likes + 1
-            category.likes =  likes
+            category.likes = likes
             category.save()
 
     return HttpResponse(likes)
@@ -79,7 +79,7 @@ def search(request):
     return render_to_response('rango/search.html', context_dict, context)
 
 def track_url(request):
-    context = RequestContext(request)
+    # context = RequestContext(request)
     page_id = None
     url = '/rango/'
     if request.method == 'GET':
@@ -285,9 +285,6 @@ def category(request, category_name_url):
     cat_list = get_category_list()
 
     # Change underscores in the category name to spaces.
-    # URLs don't handle spaces well, so we encode them as underscores.
-    # We can then simply replace the underscores with spaces again to get the name.
-   # category_name = category_name_url.replace('_', ' ')
     category_name = decode_url(category_name_url)
 
     # Create a context dictionary which we can pass to the template rendering engine
@@ -301,6 +298,7 @@ def category(request, category_name_url):
         # So the .get() method returns one model instance of raises an exception.
         # We also do a case insensitive match
         category = Category.objects.get(name__iexact=category_name)
+        context_dict['category'] = category
 
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
@@ -308,9 +306,7 @@ def category(request, category_name_url):
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
-        # We also add the category object from the database to the context dictionary
-        # We'll use this in the template to verify that the category exists.
-        context_dict['category'] = category
+
     except Category.DoesNotExist:
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
