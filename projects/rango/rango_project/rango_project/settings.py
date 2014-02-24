@@ -16,6 +16,7 @@ PROJECT_PATH = os.path.join(SETTINGS_DIR, os.pardir)
 PROJECT_PATH = os.path.abspath(PROJECT_PATH)
 DATABASE_PATH = os.path.join(PROJECT_PATH, 'rango.db')
 
+LOGIN_URL = '/rango/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
@@ -44,7 +45,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rango',
+    'registration',
 )
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,6 +67,9 @@ TEMPLATE_DIRS = (
 ROOT_URLCONF = 'rango_project.urls'
 
 WSGI_APPLICATION = 'rango_project.wsgi.application'
+
+# Persistent Cookie session settings
+SESSION_COOKIE_AGE = 600000
 
 
 # Database
