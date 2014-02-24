@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from rango.models import Category, Page
@@ -28,6 +29,21 @@ def restricted(request):
 
     return render_to_response('rango/restricted.html', context_dict, context)
 
+@login_required
+def profile(request):
+    context = RequestContext(request)
+    cat_list = get_category_list()
+    context_dict = {'cat_list': cat_list}
+    u = User.objects.get(username=request.user)
+
+    try:
+        up = UserProfile.objects.get(user=u)
+    except:
+        up = None
+
+    context_dict['user'] = u
+    context_dict['userprofile'] = up
+    return render_to_response('rango/profile.html', context_dict, context)
 
 def search(request):
     context = RequestContext(request)
@@ -251,7 +267,7 @@ def category(request, category_name_url):
         # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance of raises an exception.
         # We also do a case insensitive match
-        category = Category.objects.get(name_iexact=category_name)
+        category = Category.objects.get(name__iexact=category_name)
 
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
@@ -266,7 +282,7 @@ def category(request, category_name_url):
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
         pass
-    
+
     if request.method == 'POST':
         query = request.POST['query'].strip()
         if query:
