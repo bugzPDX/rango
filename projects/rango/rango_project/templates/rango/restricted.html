@@ -1,0 +1,14 @@
+{% extends 'rango/base.html' %}
+
+{% block title %}RESTRICTED{% endblock %}
+
+{% block body_block %}
+<div class="hero-unit">
+        <h1>This Page is Restricted</h1>
+        {% if user.is_authenticated %}
+        <strong>You are able to read this because you are logged in</strong><br />
+        {% else %}
+        <a href="/rango/login.html">Please Log In</a>
+        {% endif %}
+</div>
+{% endblock %}
