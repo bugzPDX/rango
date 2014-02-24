@@ -45,6 +45,23 @@ def profile(request):
     context_dict['userprofile'] = up
     return render_to_response('rango/profile.html', context_dict, context)
 
+@login_required
+def like_category(request):
+    # context = RequestContext(request)
+    cat_id = None
+    if request.method == 'GET':
+        cat_id = request.GET['category_id']
+
+    likes = 0
+    if cat_id:
+        category = Category.objects.get(id=int(cat_id))
+        if category:
+            likes = category.likes + 1
+            category.likes =  likes
+            category.save()
+
+    return HttpResponse(likes)
+
 def search(request):
     context = RequestContext(request)
     cat_list = get_category_list()
