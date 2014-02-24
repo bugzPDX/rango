@@ -250,11 +250,12 @@ def category(request, category_name_url):
         # Can we find a category with the given name?
         # If we can't, the .get() method raises a DoesNotExist exception.
         # So the .get() method returns one model instance of raises an exception.
-        category = Category.objects.get(name=category_name)
+        # We also do a case insensitive match
+        category = Category.objects.get(name_iexact=category_name)
 
         # Retrieve all of the associated pages.
         # Note that filter returns >= 1 model instance.
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
 
         # Adds our results list to the template context under name pages.
         context_dict['pages'] = pages
@@ -265,6 +266,12 @@ def category(request, category_name_url):
         # We get here if we didn't find the specified category.
         # Don't do anything - the template displays the "no category" message for us.
         pass
+    
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+        if query:
+            result_list = run_query(query)
+            context_dict['result_list'] = result_list
 
     # Go render the response and return it to the client.
     return render_to_response('rango/category.html', context_dict, context)

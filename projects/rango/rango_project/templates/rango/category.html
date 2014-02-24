@@ -5,6 +5,35 @@
 {% block body_block %}
 <div class="hero-unit">
         <h1>{{ category_name }}</h1>
+    <div class="container-fluid">
+        <p>Search for a page</p>
+        <form class="form-search span8" id="search_form" method="post" action="/rango/category/
+            {{ category_name_url }}/">
+            {% csrf_token %}
+            <!-- Display the search form elements here -->
+            <input type="text" class="input-long search-query" name="query"
+                value="{{ category_name }}" id="query" />
+            <button class="btn btn-primary" type="submit" name="submit"
+                value="Search" />Search</button>
+            <br />
+        </form>
+    </div>
+    <div class="container-fluid">
+        {% if result_list %}
+            <!-- Display search results in an ordered list -->
+            <ol>
+                {% for result in result_list %}
+                <li>
+                    <strong><a href="{{ result.link }}">{{ result.title }}</a></strong><br />
+                    <p>{{ result.summary }}</p>
+                </li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <br/>
+            <p>No results found</p>
+        {% endif %}
+    </div>
 
             {% if pages %}
             <ul>
