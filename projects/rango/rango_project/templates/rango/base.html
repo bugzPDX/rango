@@ -58,11 +58,11 @@
                         name="suggestion" value="" id="suggestion" /></li>
                     </form>
                 </ul>
-{% if cat_list %}
+        {% if cat_list %}
         <div id="cats">
-                {% include 'rango/category_list.html' with cat_list=cat_list %}
+            {% include 'rango/category_list.html' with cat_list=cat_list %}
         </div>
-{% endif %}
+        {% endif %}
                 {% block sidebar %}
                 {% endblock %}
                 <div id="cats">
