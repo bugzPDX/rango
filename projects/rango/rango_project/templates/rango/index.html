@@ -13,7 +13,7 @@
         {% if categories %}
         <ul>
             {% for category in categories %}
-            <li><a href="/rango/category/{{ category.url }}">{{ category.name }}</a></li>
+            <li><a href="{% url 'category' category.url %}">{{ category.name }}</a></li>
             {% endfor %}
         </ul>
         {% else %}
